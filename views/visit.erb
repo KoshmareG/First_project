@@ -1,0 +1,25 @@
+<h3>Записаться</h3>
+<form action="/visit" method="POST" role="form">
+   <div class="mb-3">
+    <label>Ваше имя</label>
+    <input name="user_name" type="text" class="form-control" value="<%= @user_name %>">
+  </div>
+  <div class="mb-3">
+    <label>Ваш телефон</label>
+    <input name="phone_number" type="text" class="form-control" value="<%= @phone_number %>">
+  </div>
+  <div class="mb-3">
+    <label>Дата и время</label>
+    <input name="date_time" type="text" class="form-control" value="<%= @date_time %>">
+    <div class="form-text">Введите дату и время посещения Barber Shop'а</div>
+  </div>
+  <div class="mb-3">
+    <select class="form-select" aria-label="Default select example" name="master">
+      <option value='' selected>Выберите мастера</option>
+      <option value="Матвей">Матвей</option>
+      <option value="Георгий">Георгий</option>
+      <option value="Святослав">Святослав</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Записаться</button>
+</form>

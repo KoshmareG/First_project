@@ -1,0 +1,16 @@
+<h3>Контакты</h3>
+<form action="/contacts" method="POST" role="form">
+  <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Ваше имя</label>
+    <input type="text" name="name" class="form-control" placeholder="Имя" value="<%= @name %>">
+  </div>  
+  <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Ваш Email</label>
+    <input type="email" name="user_email" class="form-control" placeholder="name@example.com" value="<%= @user_email %>">
+  </div>
+  <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">Сообщение</label>
+    <textarea name="user_message" class="form-control" rows="3"></textarea value="<%= @user_message %>">
+  </div>
+  <button type="submit" class="btn btn-primary">Отправить</button>
+</form>

@@ -1,0 +1,13 @@
+<form action='/login/attempt' method='post' class="form-label">
+  <form>
+    <h4>Вход</h4>
+    <div class="mb-3">
+      <input type="text" class="form-control" placeholder="Логин" autofocus>
+    </div>
+    <div class="mb-3">
+      <input type="password" class="form-control" name='userpassword' placeholder="Пароль" autofocus>
+    </div>
+    <button type="submit" class="btn btn-primary">Войти</button>
+    <p><%= @wrong_password_message %></p>
+  </form>
+</form>
