@@ -15,10 +15,10 @@
   </div>
   <div class="mb-3">
     <select class="form-select" aria-label="Default select example" name="master">
-      <option value='' selected>Выберите мастера</option>
-      <option value="Матвей">Матвей</option>
-      <option value="Георгий">Георгий</option>
-      <option value="Святослав">Святослав</option>
+      <option value='' >Выберите мастера</option>
+      <option <%= @master == 'Матвей' ? 'selected' : '' %> value="Матвей">Матвей</option>
+      <option <%= @master == 'Георгий' ? 'selected' : '' %> value="Георгий">Георгий</option>
+      <option <%= @master == 'Святослав' ? 'selected' : '' %> value="Святослав">Святослав</option>
     </select>
   </div>
   <button type="submit" class="btn btn-primary">Записаться</button>
