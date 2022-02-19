@@ -4,10 +4,18 @@ require 'pony'
 require 'sinatra/reloader'
 require 'sqlite3'
 
+def form_validation hash
+  error = hash.select {|key, value| params[key].empty?}.values.join("; ")
+end
+
+def database_init
+  return SQLite3::Database.new 'barbershop.db'
+end
+
 configure do
   enable :sessions
-  @db = SQLite3::Database.new 'barbershop.db'
-  @db.execute 'CREATE TABLE IF NOT EXISTS 
+  db = database_init
+  db.execute 'CREATE TABLE IF NOT EXISTS 
       "Users" 
       (
         "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -80,11 +88,14 @@ post '/visit' do
     file = File.open './public/users.txt', 'a'
       file.puts "Клиент: #{@user_name}   Посещение: #{@date_time}   Мастер: #{@master}   Номер телефона: #{@phone_number}"
     file.close
+    db = database_init
+    db.execute 'insert into Users (name, phone, datestamp, barber) values (?, ?, ?, ?)', [@user_name, @phone_number, @date_time, @master]
     erb "#{@user_name}, Вы записаны на посещение #{@date_time} #{@master} будет ждать Вас в указанное время!"
   else
     @error = error
     return erb :visit
   end
+
 end
 
 post '/contacts' do
@@ -124,8 +135,4 @@ post '/contacts' do
     return erb :contacts
   end
 
-end
-
-def form_validation hash
-  error = hash.select {|key, value| params[key].empty?}.values.join("; ")
 end

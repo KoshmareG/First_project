@@ -1,4 +1,15 @@
 <h3>Записаться</h3>
+
+<script type="text/javascript">
+
+  $(function() {
+
+    $('#datetimepicker').datetimepicker();
+
+  });
+
+</script>
+
 <form action="/visit" method="POST" role="form">
    <div class="mb-3">
     <label>Ваше имя</label>
@@ -10,7 +21,7 @@
   </div>
   <div class="mb-3">
     <label>Дата и время</label>
-    <input name="date_time" type="text" class="form-control" value="<%= @date_time %>">
+    <input id="datetimepicker" name="date_time" type="text" class="form-control" autocomplete="off" value="<%= @date_time %>">
     <div class="form-text">Введите дату и время посещения Barber Shop'а</div>
   </div>
   <div class="mb-3">
