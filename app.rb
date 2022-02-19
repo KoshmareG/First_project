@@ -54,7 +54,12 @@ end
 
 get '/logout' do
   session.delete(:identity)
-  erb "<div class='alert alert-message'>Logged out</div>"
+  where_user_came_from = session[:previous_url] || '/'
+  redirect to where_user_came_from
+end
+
+get '/showusers' do
+  erb 'Hello'
 end
 
 post '/login/attempt' do
@@ -62,10 +67,9 @@ post '/login/attempt' do
   @username = params[:username]
   @userpassword = params[:userpassword]
   if @username == 'admin' && @userpassword == 'secret'
-    where_user_came_from = session[:previous_url] || '/'
-    redirect to where_user_came_from
+    erb :showusers
   else
-    @wrong_password_message = 'Неверный логин или пароль'
+    @error = 'Неверный логин или пароль'
     erb :login_form
   end
 end
