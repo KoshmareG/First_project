@@ -1,0 +1,23 @@
+<h3>Клиенты</h3>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">№</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Телефон</th>
+        <th scope="col">Дата посещения</th>
+        <th scope="col">Мастер</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% @user_table.each do |row| %>
+            <tr>
+                <th scope="row"><%= row['Id'] %></th>
+                <td><%= row['Name'] %></td>
+                <td><%= row['Phone'] %></td>
+                <td><%= row['DateStamp'] %></td>
+                <td><%= row['Barber'] %></td>
+            </tr>
+      <% end %>
+    </tbody>
+  </table>

@@ -9,7 +9,15 @@ def form_validation hash
 end
 
 def database_init
-  return SQLite3::Database.new 'barbershop.db'
+  @db = SQLite3::Database.new 'barbershop.db'
+  @db.results_as_hash = true
+  return @db
+end
+
+def barbers_table
+  database_init
+  @barbers_table = @db.execute 'select * from barbers'
+  @db.close
 end
 
 configure do
@@ -19,11 +27,21 @@ configure do
       "Users" 
       (
         "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
-         "Name" VARCHAR,
+        "Name" VARCHAR,
         "Phone" VARCHAR,
         "DateStamp" VARCHAR,
         "Barber" VARCHAR
       )'
+  db.execute 'CREATE TABLE IF NOT EXISTS 
+      "Barbers" 
+      (
+        "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "Barber" VARCHAR UNIQUE
+      )'
+  barbers = ['Матвей', 'Георгий', 'Святослав']
+  barbers.each do |new_barber|
+    db.execute 'insert or ignore into Barbers (Barber) values (?)', new_barber
+  end
 end
 
 helpers do
@@ -45,6 +63,7 @@ get '/about' do
 end
 
 get '/visit' do
+  barbers_table
   erb :visit
 end
 
@@ -59,7 +78,10 @@ get '/logout' do
 end
 
 get '/showusers' do
-  erb 'Hello'
+  database_init
+  @user_table = @db.execute 'select * from users'
+  @db.close
+  erb :showusers
 end
 
 post '/login/attempt' do
@@ -67,7 +89,7 @@ post '/login/attempt' do
   @username = params[:username]
   @userpassword = params[:userpassword]
   if @username == 'admin' && @userpassword == 'secret'
-    erb :showusers
+    redirect '/showusers'
   else
     @error = 'Неверный логин или пароль'
     erb :login_form
@@ -96,6 +118,7 @@ post '/visit' do
     db.execute 'insert into Users (name, phone, datestamp, barber) values (?, ?, ?, ?)', [@user_name, @phone_number, @date_time, @master]
     erb "#{@user_name}, Вы записаны на посещение #{@date_time} #{@master} будет ждать Вас в указанное время!"
   else
+    barbers_table
     @error = error
     return erb :visit
   end
@@ -118,21 +141,6 @@ post '/contacts' do
     file = File.open './public/contacts.txt', 'a'
       file.puts "\n#{@name}\n#{@user_email}\n#{@user_message}"
     file.close
-    Pony.mail({
-      :to => 'koshmareg@yandex.ru',
-      :from => 'koshmareg@gmail.com',
-      :subject => 'hi', 
-      :body => 'Hello there.',
-      :via => :smtp,
-      :via_options => {
-        :address        => 'smtp.gmail.com',
-        :port           => '587',
-        :user_name      => 'koshmareg@gmail.com',
-        :password       => 'xlsdxkyqmenbttqo',
-        :authentication => :plain, # :plain, :login, :cram_md5, no auth by default
-        :domain         => "localhost.localdomain" # the HELO domain provided by the client to the server
-      }
-    })
     erb "Ваше сообщение отправлено"
   else
     @error = error

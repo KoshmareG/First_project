@@ -27,9 +27,9 @@
   <div class="mb-3">
     <select class="form-select" aria-label="Default select example" name="master">
       <option value='' >Выберите мастера</option>
-      <option <%= @master == 'Матвей' ? 'selected' : '' %> value="Матвей">Матвей</option>
-      <option <%= @master == 'Георгий' ? 'selected' : '' %> value="Георгий">Георгий</option>
-      <option <%= @master == 'Святослав' ? 'selected' : '' %> value="Святослав">Святослав</option>
+      <% @barbers_table.each do |row| %>
+        <option <%= @master == row['Barber'] ? 'selected' : '' %> value=<%= row['Barber'] %>><%= row['Barber'] %></option>
+      <% end %>
     </select>
   </div>
   <button type="submit" class="btn btn-primary">Записаться</button>
