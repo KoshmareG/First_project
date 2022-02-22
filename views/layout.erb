@@ -52,7 +52,7 @@
 			</nav>
 
 			<div class="mb-3">
-				<p><% if @error then %>
+				<p><% if @error && @error.size > 0 then %>
 					<div class="alert alert-danger" role="alert"><%=@error%></div>
 				<% end %></p>
 				<%= yield %>

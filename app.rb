@@ -135,15 +135,14 @@ post '/contacts' do
                     :user_message => 'Введите сообщение'
                   }
   
-  error = form_validation warning_hash
+  @error = form_validation warning_hash
 
-  if error == ''
+  if @error.size < 0
     file = File.open './public/contacts.txt', 'a'
       file.puts "\n#{@name}\n#{@user_email}\n#{@user_message}"
     file.close
     erb "Ваше сообщение отправлено"
   else
-    @error = error
     return erb :contacts
   end
 
