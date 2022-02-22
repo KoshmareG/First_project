@@ -108,19 +108,15 @@ post '/visit' do
                     :master => 'Выберите мастера'
                   }
   
-  error = form_validation warning_hash
+  @error = form_validation warning_hash
 
-  if error == ''
-    file = File.open './public/users.txt', 'a'
-      file.puts "Клиент: #{@user_name}   Посещение: #{@date_time}   Мастер: #{@master}   Номер телефона: #{@phone_number}"
-    file.close
+  if @error.size > 0
+    barbers_table
+    return erb :visit 
+  else
     db = database_init
     db.execute 'insert into Users (name, phone, datestamp, barber) values (?, ?, ?, ?)', [@user_name, @phone_number, @date_time, @master]
     erb "#{@user_name}, Вы записаны на посещение #{@date_time} #{@master} будет ждать Вас в указанное время!"
-  else
-    barbers_table
-    @error = error
-    return erb :visit
   end
 
 end
@@ -137,13 +133,10 @@ post '/contacts' do
   
   @error = form_validation warning_hash
 
-  if @error.size < 0
-    file = File.open './public/contacts.txt', 'a'
-      file.puts "\n#{@name}\n#{@user_email}\n#{@user_message}"
-    file.close
-    erb "Ваше сообщение отправлено"
-  else
+  if @error.size > 0
     return erb :contacts
+  else
+    erb "Ваше сообщение отправлено"
   end
 
 end
